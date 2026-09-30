@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Keanu Plysier — The Camp</title>
+    <meta name="description" content="Portfolio of Keanu Plysier, Digital Design & Development student at Howest Kortrijk — explore it as your own adventurer on a fantasy island camp." />
+    <meta name="theme-color" content="#0e0b09" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,1 30,9 30,23 16,31 2,23 2,9' fill='%23b6272e' stroke='%23e8cf8f' stroke-width='2'/%3E%3Ctext x='16' y='21' font-size='11' text-anchor='middle' fill='%23f5ecd6' font-family='serif' font-weight='bold'%3E20%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <canvas id="scene" aria-label="A 3D fantasy island camp"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div id="labels" aria-hidden="true"></div>
+    <div id="fade" aria-hidden="true"></div>
+
+    <div id="loading" class="screen">
+      <div class="loading-inner">
+        <div class="d20-spinner" aria-hidden="true"></div>
+        <p>Setting up camp…</p>
+      </div>
+    </div>
+
+    <section id="intro" class="screen hidden" aria-labelledby="intro-title">
+      <div class="intro-inner">
+        <p class="eyebrow">A portfolio, told as an adventure</p>
+        <h1 id="intro-title">Keanu Plysier</h1>
+        <p class="subtitle">Digital Design &amp; Development · Howest Kortrijk</p>
+        <div class="ornament" aria-hidden="true"><span></span></div>
+        <button id="enter" class="btn btn-primary btn-large">Enter the Camp</button>
+        <p class="hint">Best with sound on · <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move · <kbd>E</kbd> to interact</p>
+        <button id="skip" class="btn-text">Skip the adventure — just show me the portfolio</button>
+      </div>
+    </section>
+
+    <section id="creator" class="screen hidden" aria-label="Character creation">
+      <div class="creator-spacer" aria-hidden="true"></div>
+      <aside class="creator-panel frame" id="creator-left"></aside>
+      <aside class="creator-panel frame" id="creator-right"></aside>
+      <div class="creator-footer">
+        <button id="randomize" class="btn">Randomise</button>
+        <button id="begin" class="btn btn-primary btn-large">Begin Adventure</button>
+      </div>
+      <p class="creator-rotate-hint" aria-hidden="true">Drag to turn your character</p>
+    </section>
+
+    <div id="hud" class="hidden">
+      <div class="hud-portrait frame">
+        <canvas id="portrait" width="160" height="160" aria-hidden="true"></canvas>
+        <div class="hud-id">
+          <div id="hud-name" class="hud-name"></div>
+          <div id="hud-class" class="hud-class"></div>
+          <div class="hud-xp" title="Places discovered"><div id="hud-xp-bar"></div></div>
+          <div id="hud-discovered" class="hud-discovered"></div>
+        </div>
+      </div>
+      <nav class="hud-buttons" aria-label="Game menu">
+        <button class="hud-btn" data-action="journal" title="Journal (J)"><span class="hud-icon">✦</span><span class="hud-label">Journal</span><kbd>J</kbd></button>
+        <button class="hud-btn" data-action="character" title="Character (C)"><span class="hud-icon">♜</span><span class="hud-label">Character</span><kbd>C</kbd></button>
+        <button class="hud-btn" data-action="sound" title="Sound (M)"><span class="hud-icon" id="sound-icon">♪</span><span class="hud-label" id="sound-label">Sound on</span><kbd>M</kbd></button>
+        <button class="hud-btn" data-action="help" title="Controls (H)"><span class="hud-icon">?</span><span class="hud-label">Controls</span><kbd>H</kbd></button>
+      </nav>
+      <button id="prompt" class="prompt hidden" type="button"><kbd>E</kbd><span id="prompt-text"></span></button>
+      <div id="controls-hint" class="controls-hint">
+        <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</span>
+        <span><kbd>Shift</kbd> run</span>
+        <span><kbd>Space</kbd> jump</span>
+        <span><kbd>E</kbd> interact</span>
+        <span>drag to turn camera</span>
+      </div>
+    </div>
+
+    <div id="toasts" aria-live="polite"></div>
+    <div id="joystick" aria-hidden="true"><div class="joystick-ring"><div class="joystick-knob"></div></div></div>
+
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-backdrop" data-close></div>
+      <article class="modal-frame frame">
+        <header class="modal-header">
+          <p id="modal-kind" class="modal-kind"></p>
+          <h2 id="modal-title"></h2>
+          <div class="ornament" aria-hidden="true"><span></span></div>
+        </header>
+        <div id="modal-body" class="modal-body"></div>
+        <footer class="modal-footer">
+          <button class="btn" data-close>Close <kbd>Esc</kbd></button>
+        </footer>
+      </article>
+    </div>
+
+    <noscript>
+      <div class="noscript">
+        <h1>Keanu Plysier</h1>
+        <p>This portfolio is a 3D experience and needs JavaScript. Reach me at <a href="mailto:keanu.plysier@gmail.com">keanu.plysier@gmail.com</a> or <a href="https://github.com/KeanuPlysier3">github.com/KeanuPlysier3</a>.</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
